@@ -5,7 +5,7 @@ const product4 = "./assets/products/v4.avif";
 const product5 = "./assets/products/v2.avif";
 const product6 = "./assets/products/v3.avif";
 const product7 = "./assets/products/c3.jpg";
-const product8 = "./assets/products/c7.jpg";
+const product8 = "./assets/products/c7.avif";
 const product9 = "./assets/products/c5.jpg";
 
 export const PRODUCTS = [
@@ -54,7 +54,7 @@ export const PRODUCTS = [
   },
   {
     id: 8,
-    productName: "Chaussures de football New Balance Furon v7 Destroy FG",
+    productName: "new balance blue boots",
     price: 40.0,
     productImage: product8,
   },

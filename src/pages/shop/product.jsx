@@ -5,11 +5,11 @@ export const Product = (props) => {
   const { id, productName, price, productImage } = props.data;
   const { addToCart, cartItems } = useContext(ShopContext);
 
-  const cartItemCount = cartItems[id];
+  const cartItemCount = cartItems[id] || 0;
 
   return (
     <div className="product">
-      <img src={productImage} />
+      <img src={productImage} alt={productName} />
       <div className="description">
         <p>
           <b>{productName}</b>
