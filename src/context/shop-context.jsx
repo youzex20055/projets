@@ -1,58 +1,50 @@
-import { createContext, useEffect, useState } from "react";
-import { PRODUCTS } from "../products";
+import React, { createContext, useState } from "react";
 
-export const ShopContext = createContext(null);
-
-const getDefaultCart = () => {
-  let cart = {};
-  for (let i = 1; i < PRODUCTS.length + 1; i++) {
-    cart[i] = 0;
-  }
-  return cart;
-};
+export const ShopContext = createContext();
 
 export const ShopContextProvider = (props) => {
-  const [cartItems, setCartItems] = useState(getDefaultCart());
+  const [cartItems, setCartItems] = useState({});
+
+  const addToCart = (productId) => {
+    setCartItems((prevItems) => {
+      const newItems = { ...prevItems };
+      if (newItems[productId]) {
+        newItems[productId] += 1;
+      } else {
+        newItems[productId] = 1;
+      }
+      return newItems;
+    });
+  };
+
+  const removeFromCart = (productId) => {
+    setCartItems((prevItems) => {
+      const newItems = { ...prevItems };
+      if (newItems[productId] && newItems[productId] > 0) {
+        newItems[productId] -= 1;
+      }
+      return newItems;
+    });
+  };
 
   const getTotalCartAmount = () => {
-    let totalAmount = 0;
+    let total = 0;
     for (const item in cartItems) {
-      if (cartItems[item] > 0) {
-        let itemInfo = PRODUCTS.find((product) => product.id === Number(item));
-        totalAmount += cartItems[item] * itemInfo.price;
-      }
+      total += cartItems[item];
     }
-    return totalAmount;
-  };
-
-  const addToCart = (itemId) => {
-    setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
-  };
-
-  const removeFromCart = (itemId) => {
-    setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
-  };
-
-  const updateCartItemCount = (newAmount, itemId) => {
-    setCartItems((prev) => ({ ...prev, [itemId]: newAmount }));
+    return total;
   };
 
   const checkout = () => {
-    setCartItems(getDefaultCart());
-  };
-
-  const contextValue = {
-    cartItems,
-    addToCart,
-    updateCartItemCount,
-    removeFromCart,
-    getTotalCartAmount,
-    checkout,
+    setCartItems({});
   };
 
   return (
-    <ShopContext.Provider value={contextValue}>
+    <ShopContext.Provider
+      value={{ cartItems, addToCart, removeFromCart, getTotalCartAmount, checkout }}
+    >
       {props.children}
     </ShopContext.Provider>
   );
 };
+
